@@ -9,7 +9,11 @@
     "autoload": {
         "psr-4": {
             "Sixth\\CodeigniterSdk\\": "sixth/codeigniter-sdk/src/"
-        }
+        },
+        "files": [
+            "src/Sixth.php",
+            "src/SixthRateLimitMiddleware.php"
+        ]
     },
     "authors": [
         {
