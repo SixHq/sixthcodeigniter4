@@ -2,7 +2,7 @@
     "name": "sixth/codeigniter-sdk",
     "description": "Sixth official SDK for code igniter",
     "require": {
-        "php": "^7.4"
+        "php": ">=7.4"
     },
     "license": "MIT",
     "autoload": {
