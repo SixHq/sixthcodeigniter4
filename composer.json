@@ -1,20 +1,19 @@
 {
-    "name": "sixhq/sixthcodeigniter4",
-    "description": "Sixth SDK for Codeigniter4",
-    "require-dev": {
-        "php": "^7.4 || ^8.0"
+    "name": "sixth/codeigniter-sdk",
+    "description": "Sixth official SDK for code igniter",
+    "require": {
+        "php": "^7.4"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Sixhq\\Sixthcodeigniter4\\": "src/"
+            "Sixth\\CodeigniterSdk\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Sixhq"
+            "name": "Sixth"
         }
     ],
-    "minimum-stability": "dev",
-    "require": {}
+    "minimum-stability": "dev"
 }

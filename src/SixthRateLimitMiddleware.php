@@ -1,6 +1,6 @@
 <?php
 
-namespace Sixhq\Sixthcodeigniter4;
+namespace Sixth\CodeigniterSdk;
 
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
