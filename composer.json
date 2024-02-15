@@ -1,0 +1,21 @@
+{
+    "name": "sixhq/sixthcodeigniter4",
+    "description": "Sixth SDK for Codeigniter4",
+    "require-dev": {
+        "php": "^7.4 || ^8.0",
+        "codeigniter4/framework": "^4.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sixhq\\Sixthcodeigniter4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Adewole Opeeyemi"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
