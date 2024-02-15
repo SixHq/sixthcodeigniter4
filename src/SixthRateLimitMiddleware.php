@@ -20,7 +20,7 @@ class SixRateLimiterMiddleware implements FilterInterface
         // For example, you can perform authentication or logging here
         try{
             $path = service('uri')->getPath();
-            if ($path === '/index.php/') {
+            if ($path === '/index.php/' || $path === '/index.php' || $path === 'index.php/') {
                 $extractedString = '/';
             } else {
                 // If $path is not '/index.php/', perform the replacement

@@ -22,25 +22,30 @@ class Sixth {
     }
 
     public function init() {
-        $_base_url = "https://backend.withsix.co";
-        $_project_config_resp = file_get_contents($_base_url . "/project-config/config/" . $this->_apikey);
-        // get the user's project config
-        try {
-             if ($_project_config_resp !== false) {
-                 $this->_config = json_decode($_project_config_resp);
-                 //try_get_rate_limiter_existence 
-                 $this->_config->rate_limiter;
-                 $this->_sync_project_route($this->_config);
-             } else {
-                 $this->_config = $this->_sync_project_route();
+        try{
+            $_base_url = "https://backend.withsix.co";
+            $_project_config_resp = file_get_contents($_base_url . "/project-config/config/" . $this->_apikey);
+            // get the user's project config
+            try {
+                if ($_project_config_resp !== false) {
+                    $this->_config = json_decode($_project_config_resp);
+                    //try_get_rate_limiter_existence 
+                    $this->_config->rate_limiter;
+                    $this->_sync_project_route($this->_config);
+                } else {
+                    $this->_config = $this->_sync_project_route();
+                }
+            } catch (Exception $e) {
+                log_message("error", "An error occurred ");
+                $this->_config = $this->_sync_project_route();
             }
-        } catch (Exception $e) {
-            log_message("error", "An error occurred ");
-            $this->_config = $this->_sync_project_route();
+            $this->_config_secure_log();
+            //convert ot std class
+            $this->addMiddlewareFilters($this->_config);
+        }catch(Exception $e){
+
         }
-        $this->_config_secure_log();
-        //convert ot std class
-        $this->addMiddlewareFilters($this->_config);
+        
     }
 
     private function _sync_project_route($config=null) {
