@@ -4,7 +4,7 @@ namespace Sixth\CodeigniterSdk;
 
 use CodeIgniter\Commands\Utilities\Routes\FilterFinder;
 use Exception;
-use Sixhq\Sixthcodeigniter4\SixRateLimiterMiddleware;
+use Sixth\CodeigniterSdk\SixRateLimiterMiddleware;
 
 use Config\Services;
 
