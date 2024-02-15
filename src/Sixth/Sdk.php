@@ -1,5 +1,5 @@
 <?php
-namespace Sixhq\Sixthcodeigniter4\Sixth;
+namespace Sixhq\Sixthcodeigniter4;
 
 
 use CodeIgniter\Commands\Utilities\Routes\FilterFinder;
