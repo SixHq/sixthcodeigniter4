@@ -36,7 +36,6 @@ class Sixth {
                     $this->_config = $this->_sync_project_route();
                 }
             } catch (Exception $e) {
-                log_message("error", "An error occurred ");
                 $this->_config = $this->_sync_project_route();
             }
             $this->_config_secure_log();

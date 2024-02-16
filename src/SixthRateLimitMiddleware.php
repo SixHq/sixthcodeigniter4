@@ -192,8 +192,8 @@ class SixRateLimiterMiddleware implements FilterInterface
 
     private function _send_logs($route, $header, $payload_body, $query, $apikey){
         $body = [];
-        $body['header'] = json_encode($header);
-        $body['user_id'] = json_encode($apikey);
+        $body['header'] = $header;
+        $body['user_id'] = $apikey;
         $body['body'] = json_encode($payload_body);
         $body['query_args'] = $query;
         $body['timestamp'] = time();
@@ -205,7 +205,7 @@ class SixRateLimiterMiddleware implements FilterInterface
 
         $body = json_encode($body);
        
-        $url = "https://backend.withsix.co/rate-limit/enquire-has-reached-rate_limit";
+        $url = "https://backend.withsix.co/slack/send_message_to_slack_user";
         
         // Data to be sent in the POST request (in JSON format)
         
@@ -227,6 +227,7 @@ class SixRateLimiterMiddleware implements FilterInterface
         // Execute cURL request and get the response
         $response = curl_exec($curl);
 
+    
         // Check for errors
         if (curl_errno($curl)) {
             $error = curl_error($curl);
