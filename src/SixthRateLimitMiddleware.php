@@ -123,11 +123,7 @@ class SixRateLimiterMiddleware implements FilterInterface
         catch (Exception $e){
 
         }
-        
-
-    
-        
-        
+            
     }
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
