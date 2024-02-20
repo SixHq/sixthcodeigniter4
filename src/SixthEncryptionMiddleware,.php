@@ -2,16 +2,25 @@
 
 namespace Sixth\CodeigniterSdk;
 
+use CodeIgniter\Filters\FilterInterface;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Exception;
+use Config\Services;
+
 
 
 class SixEncryptionMiddleware implements FilterInterface
 {
+    private  $_encryption_enabled = false;
+    private $_last_updated;
 
     public function before(RequestInterface $request, $arguments = null)
     {
         // Code to run before executing controller methods
         // For example, you can perform authentication or logging here
         try{
+            $req_body = $request->getbody();
            
         }
         catch (Exception $e){
@@ -28,8 +37,63 @@ class SixEncryptionMiddleware implements FilterInterface
     {
         // Code to run after executing controller methods
         // For example, you can modify the response here
+        try{
+            _update_encryption_details(  $apikey = $arguments[1];)
+            if($_encryption_enabled)
+            {
+            
+                $path = service('uri')->getPath();
+                if ($path === '/index.php/' || $path === '/index.php' || $path === 'index.php/') {
+                    $extractedString = '/';
+                } else {
+                    // If $path is not '/index.php/', perform the replacement
+                    $extractedString = str_replace('/index.php/', '', $path);
+                }
+                $editedRoute = preg_replace("/\W+/", "~", $extractedString);
+                $req_body = $request->getbody();
+              ;
+
+
+            }
+           
+        }
+        catch (Exception $e){
+
+        }
        
     }
+    
+    function set_body($request, $body) {
+        // Define a custom receive function
+        function receive() use ($body) {
+            return ['type' => 'http.request', 'body' => $body];
+        }
+    
+        // Assign the custom receive function to the request object
+        $request->_receive = receive;
+    }
+
+
+    function parse_bools($string) {
+        // Decode the input string from bytes to UTF-8
+        $string = utf8_decode($string);
+    
+        // Remove spaces
+        $string = str_replace(' ', '', $string);
+    
+        // Replace occurrences of "true" and "false"
+        $string = str_replace('true,', 'True,', $string);
+        $string = str_replace(',true', 'True,', $string);
+        $string = str_replace('false,', 'False,', $string);
+        $string = str_replace(',false', 'False,', $string);
+    
+        // Evaluate the modified string
+        $out = eval('return ' . $string . ';');
+    
+        // Return the result
+        return $out;
+    }
+    
 
 
     private function _send_logs($route, $header, $payload_body, $query, $apikey){
@@ -90,9 +154,8 @@ class SixEncryptionMiddleware implements FilterInterface
         $response = file_get_contents($url);
         if ($response !== false) {
             $data = json_decode($response, true);
-            $this->_encryption_enabled = $data["enabled"];
-            $this->_last_updated = $timestamp;
-            $this->_last_updated = $timestamp;
+            $this->$_encryption_enabled = $data["enabled"];
+            $this->$_last_updated = $timestamp;
 
         } else {
             $this->_encryption_enabled = false;
