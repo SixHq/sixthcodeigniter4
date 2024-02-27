@@ -2,7 +2,9 @@
     "name": "sixth/codeigniter-sdk",
     "description": "Sixth official SDK for code igniter",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "monolog/monolog": "1.0.*"
+        
     },
     "type": "library",
     "license": "MIT",
@@ -12,6 +14,7 @@
         },
         "files": [
             "src/Sixth.php",
+            "src/SixthRateLimitMiddleware.php",
             "src/SixthRateLimitMiddleware.php"
         ]
     },

@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Exception;
 use Config\Services;
+require_once 'path/to/aes-everywhere.php';
 
 
 
@@ -31,67 +32,6 @@ class SixEncryptionMiddleware implements FilterInterface
     
         
         
-    }
-
-    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
-    {
-        // Code to run after executing controller methods
-        // For example, you can modify the response here
-        try{
-            _update_encryption_details(  $apikey = $arguments[1];)
-            if($_encryption_enabled)
-            {
-            
-                $path = service('uri')->getPath();
-                if ($path === '/index.php/' || $path === '/index.php' || $path === 'index.php/') {
-                    $extractedString = '/';
-                } else {
-                    // If $path is not '/index.php/', perform the replacement
-                    $extractedString = str_replace('/index.php/', '', $path);
-                }
-                $editedRoute = preg_replace("/\W+/", "~", $extractedString);
-                $req_body = $request->getbody();
-              ;
-
-
-            }
-           
-        }
-        catch (Exception $e){
-
-        }
-       
-    }
-    
-    function set_body($request, $body) {
-        // Define a custom receive function
-        function receive() use ($body) {
-            return ['type' => 'http.request', 'body' => $body];
-        }
-    
-        // Assign the custom receive function to the request object
-        $request->_receive = receive;
-    }
-
-
-    function parse_bools($string) {
-        // Decode the input string from bytes to UTF-8
-        $string = utf8_decode($string);
-    
-        // Remove spaces
-        $string = str_replace(' ', '', $string);
-    
-        // Replace occurrences of "true" and "false"
-        $string = str_replace('true,', 'True,', $string);
-        $string = str_replace(',true', 'True,', $string);
-        $string = str_replace('false,', 'False,', $string);
-        $string = str_replace(',false', 'False,', $string);
-    
-        // Evaluate the modified string
-        $out = eval('return ' . $string . ';');
-    
-        // Return the result
-        return $out;
     }
     
 
@@ -145,7 +85,7 @@ class SixEncryptionMiddleware implements FilterInterface
         
     }
 
-    private function _update_encryption_details($apikey) {
+    private function update_encryption_details($apikey) {
         $timestamp = time();
         if ($timestamp - $this->_last_updated < 10) {
             return;
@@ -162,5 +102,92 @@ class SixEncryptionMiddleware implements FilterInterface
         }
     }
 
+
+    private  function postOrderEncrypt($payload) 
+    {
+        $newSecretKey = substr(uuid4(), 0, 16);
+        echo $newSecretKey . "secret\n";
+        
+        $secretKeyPartOne = substr($newSecretKey, 0, 4);
+        $secretKeyPartTwo = substr($newSecretKey, 4, 4);
+        $secretKeyPartThree = substr($newSecretKey, 8, 4);
+        $secretKeyPartFour = substr($newSecretKey, 12, 4);
+        
+        $encryptedData = aesjs_encrypt(json_encode($payload), $newSecretKey);
+        echo $encryptedData . "data\n";
+        
+        $positions = [4, 8, 12, 16];
+        $keys = [$secretKeyPartOne, $secretKeyPartTwo, $secretKeyPartThree, $secretKeyPartFour];
+        
+        $encryptedData = substr_replace($encryptedData, $keys[0], $positions[0], 0);
+        $encryptedData = substr_replace($encryptedData, $keys[1], $positions[1], 0);
+        $encryptedData = substr_replace($encryptedData, $keys[2], $positions[2], 0);
+        $encryptedData = substr_replace($encryptedData, $keys[3], $positions[3], 0);
+        
+        return $encryptedData;
+    }
+    
+
+
+
+    public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
+    {
+        // Code to run after executing controller methods
+        // For example, you can modify the response here
+        try{
+            update_encryption_details($arguments[1]);
+            if ($_encryption_enabled){
+            
+                $path = service('uri')->getPath();
+                if ($path === '/index.php/' || $path === '/index.php' || $path === 'index.php/') {
+                    $extractedString = '/';
+                } else {
+                    // If $path is not '/index.php/', perform the replacement
+                    $extractedString = str_replace('/index.php/', '', $path);
+                }
+                $editedRoute = preg_replace("/\W+/", "~", $extractedString);
+                $req_body = $request->getbody();
+              ;
+
+
+            }
+           
+        }
+        catch (Exception $e){
+
+        }
+       
+    }
+    
+    function set_body($request, $body) {
+        // Define a custom receive function
+        function receive($body) {
+            return ['type' => 'http.request', 'body' => $body];
+        }
+    
+        // Assign the custom receive function to the request object
+        $request->_receive = receive($body);
+    }
+
+
+    function parse_bools($string) {
+        // Decode the input string from bytes to UTF-8
+        $string = utf8_decode($string);
+    
+        // Remove spaces
+        $string = str_replace(' ', '', $string);
+    
+        // Replace occurrences of "true" and "false"
+        $string = str_replace('true,', 'True,', $string);
+        $string = str_replace(',true', 'True,', $string);
+        $string = str_replace('false,', 'False,', $string);
+        $string = str_replace(',false', 'False,', $string);
+    
+        // Evaluate the modified string
+        $out = eval('return ' . $string . ';');
+    
+        // Return the result
+        return $out;
+    }
+    
 }
-?>

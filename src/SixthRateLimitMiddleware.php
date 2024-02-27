@@ -36,7 +36,6 @@ class SixRateLimiterMiddleware implements FilterInterface
             //get details about the request
             $host = $request->getIPAddress();
             $headers = $request->getHeaders();
-
             $query_params = $request->getGet();
             $body = $request->getBody();
             if ($rlConfig->is_active){
